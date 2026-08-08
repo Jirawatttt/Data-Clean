@@ -1,0 +1,24 @@
+# Python bytecode / cache
+__pycache__/
+*.py[cod]
+
+# Virtual environment
+venv/
+.venv/
+env/
+
+# Data files (ซ่อนไฟล์ Excel และ CSV)
+*.xlsx
+*.xls
+*.csv
+
+# Sensitive / Environment variables
+.env
+
+# IDE / Editor
+.vscode/
+.idea/
+
+# OS generated files
+.DS_Store
+Thumbs.db
