@@ -21,12 +21,12 @@ DATE_RANGE    = '01-30 มิ.ย.'           # ช่วงวันที่
 TOTAL_DAYS    = 30                       # จำนวนวันในเดือน (เดือนที่ลงท้าย ยน = 30)
 OUTPUT_FILE   = 'sales_dashboard_june_2569.xlsx'
 
-FILE_DAILY    = 'D30.xlsx'
-FILE_CATEGORY = 'C30.xlsx'
-FILE_PRODUCTS = 'P30.xlsx'
-FILE_HOURLY   = 'H30.xlsx'
-FILE_RECEIPTS = 'R30.xlsx'
-TEMPLATE_FILE = 'Template30day.xlsx'
+FILE_DAILY    = 'D30.xlsx' #รายวัน
+FILE_CATEGORY = 'C30.xlsx' #หมวดหมู่
+FILE_PRODUCTS = 'P30.xlsx' #สินค้า
+FILE_HOURLY   = 'H30.xlsx' #ชั่วโมง
+FILE_RECEIPTS = 'R30.xlsx' #ตามบิล
+TEMPLATE_FILE = './Template/Template30day.xlsx'
 
 # ============================================================
 # Helpers
