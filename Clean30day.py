@@ -1,10 +1,7 @@
 """
-Sales Dashboard Builder — ใช้ Sales_JUNE_2569.xlsx เป็น template
+Sales Dashboard Builder — ใช้ Template30day.xlsx เป็น template
 =================================================================
-วิธีใช้:
-  1. แก้ CONFIG ด้านล่าง
-  2. วางไฟล์ข้อมูลทั้งหมดในโฟลเดอร์เดียวกัน
-  3. รัน: python3 clean_and_build_dashboard_v3.py
+
 """
 
 import pandas as pd
@@ -18,7 +15,7 @@ import re, shutil, sys, os
 MONTH_LABEL   = 'มิถุนายน 2569'        # ชื่อเดือนภาษาไทย
 MONTH_SHORT   = 'มิ.ย.'                 # ย่อเดือน
 DATE_RANGE    = '01-30 มิ.ย.'           # ช่วงวันที่
-TOTAL_DAYS    = 30                       # จำนวนวันในเดือน (เดือนที่ลงท้าย ยน = 30)
+TOTAL_DAYS    = 30                       # จำนวนวันในเดือน
 OUTPUT_FILE   = 'sales_dashboard_june_2569.xlsx'
 
 FILE_DAILY    = 'D30.xlsx' #รายวัน

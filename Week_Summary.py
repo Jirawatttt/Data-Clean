@@ -1,12 +1,3 @@
-"""
-Usage (CLI):
-    python Week _Summary.py Brown_Ale_2026.xlsx --sheets "ก.ค."
-
-    # หลายเดือนรวมกัน (แบบไฟล์ Q2)
-    python build_weekday_summary_pandas.py Q2.xlsx --sheets "เม.ย.,พ.ค.,มิ.ย." \
-        --profit-cols "24,25,25"   # ระบุ column index ของกำไรสุทธิ แยกตามชีต ถ้าตำแหน่งเลื่อนไม่เท่ากัน
-"""
-
 import argparse
 import pandas as pd
 from openpyxl import load_workbook

@@ -1,10 +1,7 @@
 """
-Sales Dashboard Builder — ใช้ sales_dashboard_july_2569.xlsx เป็น template
+Sales Dashboard Builder — ใช้ Template31day.xlsx เป็น template
 ============================================================================
-วิธีใช้:
-  1. แก้ CONFIG ด้านล่าง
-  2. วางไฟล์ข้อมูลทั้งหมดในโฟลเดอร์เดียวกัน
-  3. รัน: python3 clean_and_build_dashboard_v2.py
+
 """
 
 import pandas as pd

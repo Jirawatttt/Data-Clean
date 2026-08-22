@@ -1,0 +1,562 @@
+{
+  "CHANG": {
+    "category": "Drink",
+    "master_name": "Chang"
+  },
+  "CHANG/60": {
+    "category": "พิเศษ",
+    "master_name": "Chang/60"
+  },
+  "CHEER RICEBERRY(PINT)": {
+    "category": "Drink",
+    "master_name": "Cheer(Pint)"
+  },
+  "CHEER RICEBERRY(PITCHER)": {
+    "category": "Drink",
+    "master_name": "Cheer(Pitcher)"
+  },
+  "COKE/SPRITE": {
+    "category": "Mixer",
+    "master_name": "Coke/Spritr"
+  },
+  "CRAFT BEER/220": {
+    "category": "Drink",
+    "master_name": "Craft Beer/Bottle"
+  },
+  "CRAFT BEER/240": {
+    "category": "Drink",
+    "master_name": "Craft Beer/Can"
+  },
+  "CRAFT BEER/260": {
+    "category": "Drink",
+    "master_name": "Craft Beer/Stout"
+  },
+  "Cheer-Tiger /เหยือก(2แถม1)": {
+    "category": "พิเศษ",
+    "master_name": "Cheer-Tiger/เหยือก (2แถม1)"
+  },
+  "FREESTYLE COCKTAIL/150": {
+    "category": "Cocktail",
+    "master_name": "Freestyle Cocktail/150"
+  },
+  "FREESTYLE COCKTAIL/160": {
+    "category": "Cocktail",
+    "master_name": "Freestyle Cocktail/160"
+  },
+  "FREESTYLE COCKTAIL/180": {
+    "category": "Cocktail",
+    "master_name": "Freestyle Cocktail/180"
+  },
+  "FREESTYLE COCKTAIL/235": {
+    "category": "Cocktail",
+    "master_name": "Freestyle Cocktail/235"
+  },
+  "FREESTYLE COCKTAIL/260": {
+    "category": "Cocktail",
+    "master_name": "Freestyle Cocktail/260"
+  },
+  "FREESTYLE MOCKTAIL": {
+    "category": "Mocktail",
+    "master_name": "Freestyle Mocktail"
+  },
+  "Gin-Tonic": {
+    "category": "Drink",
+    "master_name": "Gin-Tonic"
+  },
+  "HIMA FRUIT CIDER": {
+    "category": "Drink",
+    "master_name": "Hima Fruit"
+  },
+  "HONGTHONG": {
+    "category": "เหล้า",
+    "master_name": "Hongthong"
+  },
+  "HOUGARDEN": {
+    "category": "Drink",
+    "master_name": "Hougarden"
+  },
+  "ICE(L)": {
+    "category": "Mixer",
+    "master_name": "Ice(L)"
+  },
+  "ICE(S)": {
+    "category": "Mixer",
+    "master_name": "Ice(S)"
+  },
+  "ITALIAM SODA": {
+    "category": "Mocktail",
+    "master_name": "Italiam Soda"
+  },
+  "JACK DANIEL'S": {
+    "category": "เหล้า",
+    "master_name": "Jack Daniel's"
+  },
+  "JACK DANIEL'S COKE": {
+    "category": "เหล้า",
+    "master_name": "Jack Daniel's Coke"
+  },
+  "KIRIN": {
+    "category": "Drink",
+    "master_name": "Kirin"
+  },
+  "LEO": {
+    "category": "Drink",
+    "master_name": "Leo"
+  },
+  "LEO/80": {
+    "category": "พิเศษ",
+    "master_name": "Leo/80"
+  },
+  "LIQUOR/SHOT": {
+    "category": "เหล้า",
+    "master_name": "Liquor/Shot"
+  },
+  "LOCAL CRAFT(ON TAP)180": {
+    "category": "Drink",
+    "master_name": "Local Craft/Witbier/IPA"
+  },
+  "MERIDIAN": {
+    "category": "เหล้า",
+    "master_name": "Meridian"
+  },
+  "MOJITO CIDER": {
+    "category": "Drink",
+    "master_name": "Mogito Cider"
+  },
+  "MOOSE CIDER": {
+    "category": "Drink",
+    "master_name": "Moose Cider"
+  },
+  "NATACHA": {
+    "category": "Drink",
+    "master_name": "Natacha"
+  },
+  "ORANGE JUICE": {
+    "category": "Mocktail",
+    "master_name": "Orange Juice"
+  },
+  "POPCRON": {
+    "category": "Food",
+    "master_name": "Popcorn"
+  },
+  "REGENCY": {
+    "category": "เหล้า",
+    "master_name": "Regency"
+  },
+  "SAN MIGUIL": {
+    "category": "Drink",
+    "master_name": "San Miguil"
+  },
+  "SAN MIGUIL(WIT BER)": {
+    "category": "Drink",
+    "master_name": "San Miguil(Can)"
+  },
+  "SANGSOM": {
+    "category": "เหล้า",
+    "master_name": "Sangsom"
+  },
+  "SINGHA(BOT)": {
+    "category": "Drink",
+    "master_name": "Sing(Bottle)"
+  },
+  "SINGHA(PINT)": {
+    "category": "Drink",
+    "master_name": "Sing(Bottle)"
+  },
+  "SINGHA(PITCHER)": {
+    "category": "Drink",
+    "master_name": "Sing(Bottle)"
+  },
+  "SINGHA/110": {
+    "category": "พิเศษ",
+    "master_name": "Singha/110"
+  },
+  "SODA": {
+    "category": "Mixer",
+    "master_name": "Soda"
+  },
+  "SOFTDRINK": {
+    "category": "Mixer",
+    "master_name": "Softdrink"
+  },
+  "SOJU": {
+    "category": "Drink",
+    "master_name": "Soju"
+  },
+  "THAI SPIRIT": {
+    "category": "เหล้า",
+    "master_name": "Thai Spirit"
+  },
+  "TIGER(PITCHER)": {
+    "category": "Drink",
+    "master_name": "Tiger(Pitcher)"
+  },
+  "Tiger": {
+    "category": "Drink",
+    "master_name": "Tiger(Pint)"
+  },
+  "Tiger/แกัว(2แถม1)": {
+    "category": "พิเศษ",
+    "master_name": "Tiger/แก้ว (2แถม1)"
+  },
+  "VIRGIN BLUE HAWAILL": {
+    "category": "Mocktail",
+    "master_name": "Vrigin Blue Hawaill"
+  },
+  "VIRGIN SUNRISE": {
+    "category": "Mocktail",
+    "master_name": "Vrigin Sunrise"
+  },
+  "VIRGIN SUNSET": {
+    "category": "Mocktail",
+    "master_name": "Vrigin Sunset"
+  },
+  "VRIGIN MOJITO": {
+    "category": "Mocktail",
+    "master_name": "Vrigin Mojito"
+  },
+  "WATER": {
+    "category": "Mixer",
+    "master_name": "Water"
+  },
+  "WINGS(6PC.)": {
+    "category": "Food",
+    "master_name": "Wings/6 pc."
+  },
+  "WINGS(8 PC.)": {
+    "category": "Food",
+    "master_name": "Wings/8 pc."
+  },
+  "cheer/แก้ว (2แถม1)": {
+    "category": "พิเศษ",
+    "master_name": "Cheer/แก้ว (2แถม1)"
+  },
+  "ff+นักเกต": {
+    "category": "Food",
+    "master_name": "ff+นักเก๊ต"
+  },
+  "singha/80": {
+    "category": "พิเศษ",
+    "master_name": "Singha/80"
+  },
+  "singha/cheer 100": {
+    "category": "พิเศษ",
+    "master_name": "Singha/Cheer/100"
+  },
+  "temp": {
+    "category": "อื่นๆ",
+    "master_name": "temp"
+  },
+  "wine 850": {
+    "category": "Wine",
+    "master_name": "wine 850"
+  },
+  "กระเทียมย่าง": {
+    "category": "Food",
+    "master_name": "กระเทียมย่าง"
+  },
+  "กะเพราเนื้อวัว": {
+    "category": "กับข้าว",
+    "master_name": "กะเพราเนื้อ"
+  },
+  "กุ้งน้ำปลา": {
+    "category": "Food",
+    "master_name": "กุ้งน้ำปลา"
+  },
+  "ข้าว+กระเพรา+นักเก็ตไก่+ไข่ดาว": {
+    "category": "Food",
+    "master_name": "ข้าวกะเพรานักเก๊ตไก่"
+  },
+  "ข้าว+กระเพรา+หมูแดดเดียว+ไข่ดาว": {
+    "category": "Food",
+    "master_name": "ข้าวกะเพราหมูแดด"
+  },
+  "ข้าว+กระเพราหมูสามชั้น+ไข่ดาว": {
+    "category": "Food",
+    "master_name": "ข้าวกะเพราหมูสามชั้น"
+  },
+  "ข้าว+กระเพราเนื้อแดดเดียว+ไข่ดาว": {
+    "category": "Food",
+    "master_name": "ข้าวกระเพราเนื้อแดด"
+  },
+  "ข้าว+ผัดกระเพรา (หมู/ไก่)+ไข่ดาว": {
+    "category": "Food",
+    "master_name": "ข้าวกระเพราหมู/ไก่"
+  },
+  "ข้าว+ผัดกระเพรากุ้ง+ไข่ดาว": {
+    "category": "Food",
+    "master_name": "ข้าวกระเพรากุ้ง"
+  },
+  "ข้าว+ผัดกระเพราเนื้อวัวต่างประเทศ+ไข่ดาว": {
+    "category": "Food",
+    "master_name": "ข้าวกระเพราเนื้อ"
+  },
+  "ข้าว+สามชั้นคั่วพริกเกลือ+ไข่ดาว": {
+    "category": "Food",
+    "master_name": "ข้าวหมูสามชั้นคั่วพริกเกลือ"
+  },
+  "ข้าว+หมูกระเทียมพริกไทย+ไข่ดาว": {
+    "category": "Food",
+    "master_name": "ข้าวหมูกระเทียม"
+  },
+  "ข้าว+หมูสามชั้นทอดน้ำปลา+ไข่ดาว": {
+    "category": "Food",
+    "master_name": "ข้าวหมููสามชั้นทอดน้ำปลา"
+  },
+  "ข้าว+ไก่กระเทียมพริกไทย+ไข่ดาว": {
+    "category": "Food",
+    "master_name": "ข้าวไก่กระเทียม"
+  },
+  "ข้าวผัดกระเทียม+ไข่": {
+    "category": "Food",
+    "master_name": "ข้าวผัดกระเทียม"
+  },
+  "ข้าวผัดกระเทียมเบคอน+ไข่": {
+    "category": "Food",
+    "master_name": "ข้าวผัดกระเทียมเบคอน"
+  },
+  "ข้าวผัดกุ้ง": {
+    "category": "Food",
+    "master_name": "ข้าวผัดกุ้ง"
+  },
+  "ข้าวผัดหมู": {
+    "category": "Food",
+    "master_name": "ข้าวผัดหมู"
+  },
+  "ข้าวผัดแหนม": {
+    "category": "Food",
+    "master_name": "ข้าวผัดแหนม"
+  },
+  "ข้าวผัดไส้กรอก": {
+    "category": "Food",
+    "master_name": "ข้าวผัดไส้กรอก"
+  },
+  "ข้าวหน้าหมูเทอริยากิ+ไข่ออนเซ็น": {
+    "category": "Food",
+    "master_name": "ข้าวหน้าหมูเทอริยากิ"
+  },
+  "ข้าวเกรียบทอด": {
+    "category": "Food",
+    "master_name": "ข้าวเกรียบทอด"
+  },
+  "ข้าวเปล่า": {
+    "category": "Food",
+    "master_name": "ข้าวเปล่า"
+  },
+  "ข้าวไข่เจียวหมูสับ": {
+    "category": "Food",
+    "master_name": "ข้าวไข่เจียวหมูสับ"
+  },
+  "ชิพส์ แอนด์ ซัลซ่า": {
+    "category": "Food",
+    "master_name": "ชิพส์ แอนด์ ซัลซ่า"
+  },
+  "ชีสเบอร์เกอร์หมู": {
+    "category": "Food",
+    "master_name": "ชีสเบอร์เกอร์หมู"
+  },
+  "ชีสเบอร์เกอร์เนื้อ": {
+    "category": "Food",
+    "master_name": "ชีสเบอร์เกอร์เนื้อ"
+  },
+  "ถังแช่ไวน์(Refill)": {
+    "category": "Mixer",
+    "master_name": "ถังแช่ไวน์(Refill)"
+  },
+  "ถั่วทอด": {
+    "category": "Food",
+    "master_name": "ถั่วทอด"
+  },
+  "ถั่วแระเจแปน": {
+    "category": "Food",
+    "master_name": "ถั่ั่วแระเจแปน"
+  },
+  "นักเก็ตไก่": {
+    "category": "Food",
+    "master_name": "นักเก๊ตไก่"
+  },
+  "บราวน์เอลพอร์คชอป": {
+    "category": "Food",
+    "master_name": "บราวน์เอลพอร์คช็อป"
+  },
+  "บราวน์เอลพอร์คชอป+ซิ๊อสพริกไทยดำ": {
+    "category": "Food",
+    "master_name": "บราวน์เอลพอร์คช็อป/พริกไทยดำ"
+  },
+  "บราวน์เอลโรล(เนื้อ)": {
+    "category": "Food",
+    "master_name": "บราวน์เอลโรล/เนื้อ"
+  },
+  "บราวเอลคั่วแห้ง/วัว": {
+    "category": "Food",
+    "master_name": "บราวเอลคั่วแห้งเนื้อ"
+  },
+  "บราวเอลคั่วแห้ง/หมู": {
+    "category": "Food",
+    "master_name": "บราวเอลคั่ั่วแห้งหมู"
+  },
+  "ปลาชุบเกล็ดขนมปังทอด": {
+    "category": "Food",
+    "master_name": "ปลาชุบเกล็ด"
+  },
+  "ปลาหมึกคั่วพริกเกลือ": {
+    "category": "Food",
+    "master_name": "ปลาหมึกคั่วพริกเกลือ"
+  },
+  "ปลาหมึกชุบแป้งทอด": {
+    "category": "Food",
+    "master_name": "ปลาหมึกชุบแป้งทอด"
+  },
+  "ปอเปี๊ยะผัก": {
+    "category": "Food",
+    "master_name": "ปอเปี๊ยผัก"
+  },
+  "ปูอัดวาซาบิ": {
+    "category": "Food",
+    "master_name": "ปูอัดวาซาบิ"
+  },
+  "พิคานย่าย่างแจ่ว": {
+    "category": "Food",
+    "master_name": "พิคานย่าย่างแจ่ว"
+  },
+  "ฟิช แอนด์ ชิพส์": {
+    "category": "Food",
+    "master_name": "ฟิช แอนด์ ชิพส์"
+  },
+  "มะนาวสไลท์": {
+    "category": "Mixer",
+    "master_name": "มะนาวสไลด์"
+  },
+  "ยำทูน่า": {
+    "category": "Food",
+    "master_name": "ยำทูน่า"
+  },
+  "ยำปูอัดวาซาบิ": {
+    "category": "Food",
+    "master_name": "ยำปูอัดวาซาบิ"
+  },
+  "ยำวุ้นเส้นรวม": {
+    "category": "Food",
+    "master_name": "ยำวุ้นเส้นรวม"
+  },
+  "ยำวุ้นเส้นหมูยอหมูสับ": {
+    "category": "Food",
+    "master_name": "ยำวุ้นเส้นหมูยอ/สับ"
+  },
+  "ยำสาหร่ายเจแปน": {
+    "category": "Food",
+    "master_name": "ยำสาหร่ายเจแปน"
+  },
+  "ยำหมูยอ": {
+    "category": "Food",
+    "master_name": "ยำหมูยอ"
+  },
+  "ยำแหนม": {
+    "category": "Food",
+    "master_name": "ยำแหนม"
+  },
+  "ลาบหมู / ลาบไก่": {
+    "category": "Food",
+    "master_name": "ลาบหมู/ลาบไก่"
+  },
+  "ลาบหมูทอด": {
+    "category": "Food",
+    "master_name": "ลาบหมููทอด"
+  },
+  "ลาบเนื้อวัว": {
+    "category": "Food",
+    "master_name": "ลาบเนื้อวัว"
+  },
+  "ลาบเหนือ(วัว)": {
+    "category": "Food",
+    "master_name": "ลาบเหนือ/วัว"
+  },
+  "ลาบเหนือ(หมู)": {
+    "category": "Food",
+    "master_name": "ลาบเหนือ/หมู"
+  },
+  "สลัดทูน่า/ปูอัด/สาหร่าย": {
+    "category": "Food",
+    "master_name": "สลัดทูน่า/ปูอัด/สาหร่าย"
+  },
+  "สามชั้นคั่วพริกเกลือ": {
+    "category": "Food",
+    "master_name": "สามชั้นคั่วพริกเกลือ"
+  },
+  "สามชั้นทอดน้ำปลา": {
+    "category": "Food",
+    "master_name": "สามชั้นทอดน้ำปลา"
+  },
+  "หมูมะนาว": {
+    "category": "Food",
+    "master_name": "หมููมะนาว"
+  },
+  "หอมทอด": {
+    "category": "Food",
+    "master_name": "หอมทอด"
+  },
+  "เกี้ยวหมูซ่า": {
+    "category": "Food",
+    "master_name": "เกี๊ยวหมูซ่า"
+  },
+  "เนื้อแดดเดียว": {
+    "category": "Food",
+    "master_name": "เนื้อแดดเดียว"
+  },
+  "เบคอนทอด+น้ำจิ้มซีฟู๊ด": {
+    "category": "Food",
+    "master_name": "เบค่อนทอด"
+  },
+  "เบคอนพันไส้กรอก": {
+    "category": "Food",
+    "master_name": "เบค่อนพันไส้กรอก"
+  },
+  "เฟรนซ์ฟรายด์": {
+    "category": "Food",
+    "master_name": "เฟรนซ์ฟรายด์"
+  },
+  "เม็ดมะม่วงหิมพานต์ทอด": {
+    "category": "Food",
+    "master_name": "เม็ดมะม่วง"
+  },
+  "เหล้าบ๊วย/ขวด": {
+    "category": "Drink",
+    "master_name": "เหล้าบ๊วย"
+  },
+  "เอ็นเข่าไก่ทอด": {
+    "category": "Food",
+    "master_name": "เอ็นเข่าไก่ทอด"
+  },
+  "แป้งตอติญ่า": {
+    "category": "Food",
+    "master_name": "แป้งตอติญ่า"
+  },
+  "แหนมกระดูกหมูอ่อนทอด": {
+    "category": "Food",
+    "master_name": "แหนมกระดูกหมูทอด"
+  },
+  "แหนมทรงเครื่อง": {
+    "category": "Food",
+    "master_name": "แหนมทรงเครื่อง"
+  },
+  "แหนมเอ็นไก่ทอด": {
+    "category": "Food",
+    "master_name": "แหนมเอ็นไก่ทอด"
+  },
+  "แฮชบราวน์": {
+    "category": "Food",
+    "master_name": "แฮชยราวน์"
+  },
+  "ไก่ทอดเกลือ": {
+    "category": "Food",
+    "master_name": "ไก่ทอดเกลือ"
+  },
+  "ไข่ดาว": {
+    "category": "Food",
+    "master_name": "ไข่ดาว"
+  },
+  "ไส้กรอกไก่ชีส": {
+    "category": "Food",
+    "master_name": "ไส้กรอกไก่ชีส"
+  }
+}
