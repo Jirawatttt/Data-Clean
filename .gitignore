@@ -12,6 +12,9 @@ env/
 *.xls
 *.csv
 
+# ยกเว้นไฟล์ template ให้ upload ได้
+!Template/*.xlsx
+
 # Sensitive / Environment variables
 .env
 

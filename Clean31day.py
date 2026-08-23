@@ -1,9 +1,3 @@
-"""
-Sales Dashboard Builder — ใช้ Template31day.xlsx เป็น template
-============================================================================
-
-"""
-
 import pandas as pd
 from openpyxl import load_workbook
 from openpyxl.styles import Font, PatternFill, Alignment, Border
@@ -18,11 +12,11 @@ DATE_RANGE    = '01-31 ก.ค.'
 TOTAL_DAYS    = 31
 OUTPUT_FILE   = 'sales_dashboard_July_2569.xlsx'
 
-FILE_DAILY    = 'DAILY.xlsx' #รายวัน
-FILE_CATEGORY = 'CATEGORY.xlsx' #หมวดหมู่
-FILE_PRODUCTS = 'PRODUCTS.xlsx' #สินค้า
-FILE_HOURLY   = 'HOURLY.xlsx' #รายชั่วโมง
-FILE_RECEIPTS = 'RECEIPTS.xlsx' #ตามบิล
+FILE_DAILY    = 'D31.xlsx' #รายวัน
+FILE_CATEGORY = 'C31.xlsx' #หมวดหมู่
+FILE_PRODUCTS = 'P31.xlsx' #สินค้า
+FILE_HOURLY   = 'H31.xlsx' #รายชั่วโมง
+FILE_RECEIPTS = 'R31.xlsx' #ตามบิล
 TEMPLATE_FILE = './Template/Template31day.xlsx'
 
 # ============================================================
