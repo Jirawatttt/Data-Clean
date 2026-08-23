@@ -10,7 +10,7 @@ MONTH_LABEL   = 'มิถุนายน 2569'        # ชื่อเดื�
 MONTH_SHORT   = 'มิ.ย.'                 # ย่อเดือน
 DATE_RANGE    = '01-30 มิ.ย.'           # ช่วงวันที่
 TOTAL_DAYS    = 30                       # จำนวนวันในเดือน
-OUTPUT_FILE   = 'sales_dashboard_june_2569.xlsx'
+OUTPUT_FILE   = 'Data_june_2569.xlsx'
 
 FILE_DAILY    = 'D30.xlsx' #รายวัน
 FILE_CATEGORY = 'C30.xlsx' #หมวดหมู่

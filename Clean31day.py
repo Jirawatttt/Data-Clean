@@ -10,7 +10,7 @@ MONTH_LABEL   = 'กรกฎาคมคม 2569'
 MONTH_SHORT   = 'ก.ค.'
 DATE_RANGE    = '01-31 ก.ค.'
 TOTAL_DAYS    = 31
-OUTPUT_FILE   = 'sales_dashboard_July_2569.xlsx'
+OUTPUT_FILE   = 'Data_July_2569.xlsx'
 
 FILE_DAILY    = 'D31.xlsx' #รายวัน
 FILE_CATEGORY = 'C31.xlsx' #หมวดหมู่
