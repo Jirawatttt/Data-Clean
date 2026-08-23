@@ -1,18 +1,84 @@
-# Data Pipeline Clean infotmation Gpos
+# Data-Clean
 
-**Clean30and31day**
-clean Data pos
-input data .xlsx and change Config in code and run 
-- python Clean30day
-- python Clean31day
-Cod อิงจาก Template ที่มีในระบบ 
+สคริปต์ Python สำหรับทำความสะอาดและสรุปข้อมูลยอดขายจากระบบ POS (ไฟล์ export เป็น .xlsx) แล้วสร้างเป็นรายงาน/แดชบอร์ด Excel ที่พร้อมใช้งาน
 
-**Week_Summary.py**
-clean data hanmake
-python Week _Summary.py Brown_Ale_2026.xlsx --sheets "ชื่อของเดือน"
-หลายเดือนใช้คำสั่งนี้
+## ความสามารถหลัก
+
+- **Clean30day.py / Clean31day.py** — นำไฟล์ export จาก POS (ยอดขายรายวัน, หมวดหมู่, สินค้า, ช่วงเวลา, ใบเสร็จ) มาคลีนและใส่ลง Template Excel เพื่อสร้างเป็น Sales Dashboard ของเดือนนั้นๆ (เลือกใช้ตามจำนวนวันในเดือน 30 หรือ 31 วัน)
+- **Week_Summary.py** — สรุปยอดขาย/กำไรเฉลี่ยตามวันในสัปดาห์ (จันทร์–อาทิตย์) จากไฟล์ Excel รายเดือน สามารถรวมได้หลายชีต/หลายเดือนในคำสั่งเดียว
+- **Category/** — ชุดสคริปต์สำหรับแบ่งยอดขายสินค้าตามหมวดหมู่ (mapping ชื่อสินค้าจาก POS ให้ตรงกับ master menu) พร้อม cross-check ยอดกับไฟล์ใบเสร็จ
+
+## โครงสร้างโปรเจกต์
+
+```
+Data-Clean/
+├── Clean30day.py            # สร้าง Sales Dashboard สำหรับเดือนที่มี 30 วัน
+├── Clean31day.py            # สร้าง Sales Dashboard สำหรับเดือนที่มี 31 วัน
+├── Week_Summary.py          # สรุปยอดขาย/กำไรตามวันในสัปดาห์
+├── requirements.txt
+└── Category/
+    ├── pos_sales_pipeline.py   # ฟังก์ชันหลัก: โหลด master menu, mapping ชื่อสินค้า, cross-check
+    ├── report.py               # CLI สำหรับรันสร้างรายงานยอดขายตามเมนู/หมวดหมู่
+    └── name_mapping.json       # ตาราง mapping ชื่อสินค้าจาก POS -> ชื่อใน master menu
+```
+
+## การติดตั้ง
+
+ต้องมี Python 3.9 ขึ้นไป จากนั้นติดตั้ง dependency ด้วยคำสั่ง
+
+```bash
+pip install -r requirements.txt
+```
+
+## วิธีใช้งาน
+
+### 1. Clean30day.py / Clean31day.py
+
+ก่อนรัน ให้แก้ค่าตั้งต้น (CONFIG) ที่ต้นไฟล์ให้ตรงกับเดือนที่ต้องการ เช่น ชื่อเดือน, ช่วงวันที่, และชื่อไฟล์ .xlsx ที่ export มาจาก POS (ไฟล์รายวัน, หมวดหมู่, สินค้า, ช่วงเวลา, ใบเสร็จ) รวมถึง Template ที่จะใช้
+
+จากนั้นวางไฟล์ .xlsx ที่เกี่ยวข้องไว้ในโฟลเดอร์เดียวกัน แล้วรัน
+
+```bash
+python Clean30day.py
+# หรือ
+python Clean31day.py
+```
+
+สคริปต์จะอ่านไฟล์ทั้งหมด คำนวณสรุปยอดขาย และสร้างไฟล์ Dashboard Excel ใหม่ตามชื่อที่ตั้งไว้ใน `OUTPUT_FILE`
+
+> โค้ดอิงจาก Template ที่มีอยู่ในระบบ (`Template/Template30day.xlsx`, `Template/Template31day.xlsx`)
+
+### 2. Week_Summary.py
+
+สรุปยอดขาย/กำไรเฉลี่ยตามวันในสัปดาห์ จากไฟล์ Excel ที่มีชีตแยกตามเดือน
+
+```bash
+# สรุปเดือนเดียว
+python Week_Summary.py Brown_Ale_2026.xlsx --sheets "ชื่อของเดือน"
+
+# สรุปหลายเดือนพร้อมกัน
 python Week_Summary.py Q2.xlsx --sheets "เม.ย.,พ.ค.,มิ.ย."
+```
 
-**Category**
-ไฟล์ COGS คือไฟล์หลักที่เอาไว้แบ่ง category ของยอดสินค้า และ สินค้าตามบิล
-python report.py
+ผลลัพธ์จะถูกสร้างเป็นไฟล์ใหม่ (ไฟล์ต้นฉบับจะไม่ถูกแก้ไข) ค่า default คือ `<ชื่อไฟล์เดิม>_summary.xlsx` หรือกำหนดเองได้ด้วย `--output`
+
+### 3. Category/report.py
+
+ใช้สำหรับแบ่งยอดขายสินค้าตามหมวดหมู่ โดยอิงจากไฟล์ master menu (ไฟล์ที่มีชีตชื่อ `Category`) และไฟล์ `name_mapping.json`
+
+```bash
+cd Category
+python report.py [โฟลเดอร์ที่เก็บไฟล์]
+```
+
+ตัวเลือกเพิ่มเติม:
+
+- `--category ชื่อหมวดหมู่` กรองเฉพาะหมวดหมู่ที่ต้องการ (ไม่ระบุ = เอาทุกหมวด)
+- `--mapping-file path` ระบุ path ของ `name_mapping.json` เอง (ค่า default คือไฟล์ในโฟลเดอร์เดียวกัน)
+
+สคริปต์จะค้นหาไฟล์ .xlsx ในโฟลเดอร์ที่ระบุโดยอัตโนมัติ (master menu, ยอดขายตามสินค้า, ใบเสร็จ) จับคู่ชื่อสินค้าตาม mapping แล้วสร้างไฟล์รายงานสรุปยอดขายตามเมนู หากมีไฟล์ใบเสร็จของเดือนนั้นด้วย จะทำการ cross-check ยอดขายให้อัตโนมัติ และหากพบชื่อสินค้าที่ยัง mapping ไม่ได้ จะบันทึกรายชื่อไว้ในไฟล์ `.unmapped.csv` เพื่อนำไปเพิ่มใน `name_mapping.json` ต่อไป
+
+## หมายเหตุ
+
+- สคริปต์ทั้งหมดออกแบบมาให้ใช้กับไฟล์ export จากระบบ POS ที่มีโครงสร้างคอลัมน์เฉพาะของธุรกิจนี้ หากนำไปใช้กับข้อมูลรูปแบบอื่น อาจต้องปรับชื่อคอลัมน์/ตำแหน่งข้อมูลในโค้ดให้ตรงกัน
+- ไฟล์ต้นฉบับ (input) จะไม่ถูกแก้ไข ทุกสคริปต์จะสร้างไฟล์ผลลัพธ์ใหม่แยกต่างหาก
