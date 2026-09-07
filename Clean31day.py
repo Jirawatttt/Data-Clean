@@ -6,11 +6,11 @@ import re, shutil, sys, os
 # ============================================================
 # CONFIG — แก้ตรงนี้เพื่อใช้กับเดือนใหม่
 # ============================================================
-MONTH_LABEL   = 'กรกฎาคมคม 2569'
-MONTH_SHORT   = 'ก.ค.'
-DATE_RANGE    = '01-31 ก.ค.'
+MONTH_LABEL   = 'สิงหาคม 2569'
+MONTH_SHORT   = 'ส.ค.'
+DATE_RANGE    = '01-31 ส.ค.'
 TOTAL_DAYS    = 31
-OUTPUT_FILE   = 'Data_July_2569.xlsx'
+OUTPUT_FILE   = 'Data_August_2569.xlsx'
 
 FILE_DAILY    = 'D31.xlsx' #รายวัน
 FILE_CATEGORY = 'C31.xlsx' #หมวดหมู่
@@ -82,14 +82,27 @@ prod_df = prod_df[prod_df['ชื่อสินค้า'] != 'รวมทั�
 prod_df['sales'] = prod_df['ยอดขายสุทธิ (฿)'].apply(parse_thb)
 top10 = prod_df.sort_values('sales', ascending=False).head(10).reset_index(drop=True)
 
-# --- Hourly (จำกัด 7 rows → H7:H13) ---
+# --- Hourly ---
 hour_df = pd.read_excel(FILE_HOURLY)
 hour_df = hour_df[hour_df['ระยะเวลา'] != 'รวมทั้งหมด'].copy()
-hour_df['sales']    = hour_df['ยอดขายรวม (฿)'].apply(parse_thb)
-hour_df['orders']   = pd.to_numeric(hour_df['จำนวนออเดอร์'], errors='coerce').fillna(0).astype(int)
-hour_df = hour_df[hour_df['sales'] > 0].reset_index(drop=True)
-hour_df['time_str'] = hour_df['ระยะเวลา'].apply(fmt_hour)
-hour_df = hour_df.head(7)
+hour_df['sales']  = hour_df['ยอดขายรวม (฿)'].apply(parse_thb)
+hour_df['orders'] = pd.to_numeric(hour_df['จำนวนออเดอร์'], errors='coerce').fillna(0).astype(int)
+hour_df = hour_df[hour_df['sales'] > 0].copy()
+hour_df['time_str']   = hour_df['ระยะเวลา'].apply(fmt_hour)
+hour_df['hour_start'] = hour_df['ระยะเวลา'].str.extract(r'^(\d+)').astype(int)
+
+# เรียงใหม่: เย็น-ดึก (18:00+) ก่อน แล้วตามด้วยเช้า (00:00-05:59)
+hour_evening = hour_df[hour_df['hour_start'] >= 18].sort_values('hour_start')
+hour_night   = hour_df[hour_df['hour_start'] <  6].sort_values('hour_start')
+hour_df = pd.concat([hour_evening, hour_night]).reset_index(drop=True)
+
+# คำนวณ row positions จาก data จริง (ไม่ hardcode)
+HOURLY_START = 7
+HOURLY_ROWS  = len(hour_df)
+HOURLY_END   = HOURLY_START + HOURLY_ROWS - 1
+HOURLY_TOTAL = HOURLY_END + 1
+
+print(f"   → Hourly: {HOURLY_ROWS} ช่วงเวลา (row {HOURLY_START}-{HOURLY_END}, total row {HOURLY_TOTAL})")
 
 # --- Receipts ---
 rec_df    = pd.read_excel(FILE_RECEIPTS)
@@ -100,7 +113,7 @@ total_sales  = daily_df['sales'].sum()
 total_items  = int(rec_df['จำนวน'].sum())
 total_disc   = daily_df['disc'].sum()
 avg_per_bill = round(total_sales / num_bills) if num_bills > 0 else 0
-n_open       = len(daily_df[daily_df['sales'] > 0])   # วันที่มีการขาย
+n_open       = len(daily_df[daily_df['sales'] > 0])
 
 print(f"\n📊 สรุปสถิติ")
 print(f"   ยอดขายรวม : {total_sales:,.0f} บาท")
@@ -117,22 +130,22 @@ shutil.copy(TEMPLATE_FILE, OUTPUT_FILE)
 wb = load_workbook(OUTPUT_FILE)
 ws = wb.active
 
-# Unmerge ทั้งหมด แล้ว clear ค่า + format ทุกอย่างออกให้หมด
+# Clear ทุกอย่าง
 for mr in list(ws.merged_cells.ranges): ws.unmerge_cells(str(mr))
 for row in ws.iter_rows():
     for cell in row:
-        cell.value       = None
-        cell.fill        = PatternFill('none')
-        cell.border      = NO_BORDER        # ← reset เส้นตาราง
-        cell.number_format = 'General'      # ← reset number format (แก้ float)
+        cell.value         = None
+        cell.fill          = PatternFill('none')
+        cell.border        = NO_BORDER
+        cell.number_format = 'General'
 
-# ── B1: Title ──────────────────────────────────────────────
+# ── Title ──────────────────────────────────────────────────
 ws['B1'].value = f'🏪  SALES DASHBOARD  |  ยอดขายประจำเดือน {MONTH_LABEL}  ({DATE_RANGE})'
 ws['B1'].fill = mfill(C_DARK); ws['B1'].font = mf(C_WHITE, True, 14)
 ws['B1'].alignment = mal(); ws.merge_cells('B1:J1')
 ws.row_dimensions[1].height = 45
 
-# ── Row 2-3: KPI Cards ────────────────────────────────────
+# ── KPI Cards row 2-3 ──────────────────────────────────────
 for coord, txt, fill in [
     ('B2', f'💰 ยอดขายรวม\n{total_sales:,.0f} บาท',  C_MED),
     ('D2', f'📦 รายการขาย\n{total_items:,} รายการ',   C_LIGHT),
@@ -141,98 +154,82 @@ for coord, txt, fill in [
 ]:
     ws[coord].value = txt; ws[coord].fill = mfill(fill)
     ws[coord].font = mf(C_WHITE, True, 11); ws[coord].alignment = mal(w=True)
-ws.merge_cells('B2:C3')
-ws.merge_cells('D2:F3')   # ← merge ถึง F
-ws.merge_cells('H2:I3')
-ws.merge_cells('J2:J3')
-ws.row_dimensions[2].height = 49.5
-ws.row_dimensions[3].height = 49.5
+ws.merge_cells('B2:C3'); ws.merge_cells('D2:F3')
+ws.merge_cells('H2:I3'); ws.merge_cells('J2:J3')
+ws.row_dimensions[2].height = 49.5; ws.row_dimensions[3].height = 49.5
 
-# ── Row 5: Section headers ────────────────────────────────
+# ── Section headers row 5 ──────────────────────────────────
 ws['B5'].value = '📅  ยอดขายรายวัน'
 ws['B5'].fill = mfill(C_MED); ws['B5'].font = mf(C_WHITE, True)
 ws['B5'].alignment = mal(); ws.merge_cells('B5:F5')
 ws.row_dimensions[5].height = 25.5
-
 ws['H5'].value = '⏰  ยอดขายตามช่วงเวลา'
 ws['H5'].fill = mfill(C_MED); ws['H5'].font = mf(C_WHITE, True)
 ws['H5'].alignment = mal(); ws.merge_cells('H5:J5')
 
-# ── Row 6: Column headers (ไม่มี (฿)) ────────────────────
-for col, lbl in [('B','วันที่'), ('C','วัน'), ('D','ยอดขาย'), ('E','ออเดอ'), ('F','ยอดสุทธิ')]:
+# ── Column headers row 6 ───────────────────────────────────
+for col, lbl in [('B','วันที่'),('C','วัน'),('D','ยอดขาย'),('E','ออเดอ'),('F','ยอดสุทธิ')]:
     c = ws[f'{col}6']; c.value = lbl
     c.fill = mfill(C_DARK); c.font = mf(C_WHITE, True); c.alignment = mal()
-for col, lbl in [('H','ช่วงเวลา'), ('I','ยอดขาย'), ('J','ออเดอ')]:
+for col, lbl in [('H','ช่วงเวลา'),('I','ยอดขาย'),('J','ออเดอ')]:
     c = ws[f'{col}6']; c.value = lbl
     c.fill = mfill(C_DARK); c.font = mf(C_WHITE, True); c.alignment = mal()
 ws.row_dimensions[6].height = 19.5
 
-# Column widths
 for col, w in [('A',2),('B',20),('C',14),('D',14),('E',8),('F',14),('G',3),('H',22),('I',14),('J',10)]:
     ws.column_dimensions[col].width = w
 
-# ── Rows 7-37: Daily data ─────────────────────────────────
+# ── Daily data rows 7-37 ───────────────────────────────────
 for day_idx in range(TOTAL_DAYS):
     r = 7 + day_idx
     fill = C_STRIPE if day_idx % 2 == 0 else C_WHITE
     ws.row_dimensions[r].height = 19.5
-
     if day_idx < len(daily_df):
         row = daily_df.iloc[day_idx]
-        vals = [
-            ('B', row['date_str']),
-            ('C', row['day_th']),
-            ('D', round(row['sales'])),
-            ('E', row['orders']),      # ← ตัวเลข (int)
-            ('F', round(row['net'])),
-        ]
+        vals = [('B', row['date_str']), ('C', row['day_th']),
+                ('D', round(row['sales'])), ('E', int(row['orders'])), ('F', round(row['net']))]
     else:
         vals = [('B',''),('C',''),('D',0),('E',0),('F',0)]
-
     for col, val in vals:
         c = ws[f'{col}{r}']; c.value = val
         c.fill = mfill(fill); c.font = mf(C_BLACK); c.alignment = mal()
         c.border = NO_BORDER
 
-# ── Rows 7-13: Hourly data (ไม่มีเส้นตาราง) ─────────────
+# ── Hourly data (เรียง เย็น→ดึก→เช้า, ไม่มีเส้น) ──────────
 for i, row in hour_df.iterrows():
-    r = 7 + i; fill = C_STRIPE if i % 2 == 0 else C_WHITE
-    for col, val in [('H', row['time_str']), ('I', int(row['sales'])), ('J', row['orders'])]:
+    r = HOURLY_START + i
+    fill = C_STRIPE if i % 2 == 0 else C_WHITE
+    for col, val in [('H', row['time_str']), ('I', int(row['sales'])), ('J', int(row['orders']))]:
         c = ws[f'{col}{r}']; c.value = val
         c.fill = mfill(fill); c.font = mf(C_BLACK); c.alignment = mal()
-        c.border = NO_BORDER   # ← ไม่มีเส้นตาราง
+        c.border = NO_BORDER
 
-# ── Row 14: Hourly total ──────────────────────────────────
-ws['H14'].value = 'รวม'
-ws['H14'].fill = mfill(C_MED); ws['H14'].font = mf(C_WHITE, True); ws['H14'].alignment = mal()
-ws['I14'].value = '=SUM(I7:I13)'
-ws['I14'].fill = mfill(C_MED); ws['I14'].font = mf(C_WHITE, True); ws['I14'].alignment = mal()
-ws['J14'].value = '=SUM(J7:J13)'
-ws['J14'].fill = mfill(C_MED); ws['J14'].font = mf(C_WHITE, True); ws['J14'].alignment = mal()
-ws.row_dimensions[14].height = 19.5
+# ── Hourly total (คำนวณ row อัตโนมัติ) ────────────────────
+ws[f'H{HOURLY_TOTAL}'].value = 'รวม'
+ws[f'H{HOURLY_TOTAL}'].fill = mfill(C_MED); ws[f'H{HOURLY_TOTAL}'].font = mf(C_WHITE, True)
+ws[f'H{HOURLY_TOTAL}'].alignment = mal()
+ws[f'I{HOURLY_TOTAL}'].value = f'=SUM(I{HOURLY_START}:I{HOURLY_END})'
+ws[f'I{HOURLY_TOTAL}'].fill = mfill(C_MED); ws[f'I{HOURLY_TOTAL}'].font = mf(C_WHITE, True)
+ws[f'I{HOURLY_TOTAL}'].alignment = mal()
+ws[f'J{HOURLY_TOTAL}'].value = f'=SUM(J{HOURLY_START}:J{HOURLY_END})'
+ws[f'J{HOURLY_TOTAL}'].fill = mfill(C_MED); ws[f'J{HOURLY_TOTAL}'].font = mf(C_WHITE, True)
+ws[f'J{HOURLY_TOTAL}'].alignment = mal()
+ws.row_dimensions[HOURLY_TOTAL].height = 19.5
 
-# ── Row 38: Daily total ───────────────────────────────────
+# ── Daily total row 38 ─────────────────────────────────────
 ws['B38'].value = 'รวม'
 ws['B38'].fill = mfill(C_MED); ws['B38'].font = mf(C_WHITE, True); ws['B38'].alignment = mal()
-
-ws['C38'].value = n_open          # ← จำนวนวันที่มีการขาย
+ws['C38'].value = n_open
 ws['C38'].fill = mfill(C_MED); ws['C38'].font = mf(C_WHITE, True); ws['C38'].alignment = mal()
-
-ws['D38'].value = '=SUM(D7:D37)'
-ws['D38'].fill = mfill(C_MED); ws['D38'].font = mf(C_WHITE, True); ws['D38'].alignment = mal()
-
-ws['E38'].value = '=SUM(E7:E37)'
-ws['E38'].fill = mfill(C_MED); ws['E38'].font = mf(C_WHITE, True); ws['E38'].alignment = mal()
-
-ws['F38'].value = '=SUM(F7:F37)'
-ws['F38'].fill = mfill(C_MED); ws['F38'].font = mf(C_WHITE, True); ws['F38'].alignment = mal()
-
+for col in ['D','E','F']:
+    c = ws[f'{col}38']; c.value = f'=SUM({col}7:{col}37)'
+    c.fill = mfill(C_MED); c.font = mf(C_WHITE, True); c.alignment = mal()
 ws.row_dimensions[38].height = 19.5
 
-# ── Row 39: blank gap ─────────────────────────────────────
+# ── Gap row 39 ─────────────────────────────────────────────
 ws.row_dimensions[39].height = 7.5
 
-# ── Row 40: Section headers ───────────────────────────────
+# ── Section headers row 40 ─────────────────────────────────
 ws['B40'].value = '🗂️  ยอดขายตามหมวดหมู่'
 ws['B40'].fill = mfill(C_MED); ws['B40'].font = mf(C_WHITE, True); ws['B40'].alignment = mal()
 ws.merge_cells('B40:E40')
@@ -241,57 +238,48 @@ ws['H40'].fill = mfill(C_MED); ws['H40'].font = mf(C_WHITE, True); ws['H40'].ali
 ws.merge_cells('H40:J40')
 ws.row_dimensions[40].height = 19.5
 
-# ── Row 41: Column headers (ไม่มี (฿)) ───────────────────
-for col, lbl in [('B','หมวดหมู่'), ('C','ยอดขาย'), ('D','จำนวน'), ('E','%')]:
+# ── Column headers row 41 ──────────────────────────────────
+for col, lbl in [('B','หมวดหมู่'),('C','ยอดขาย'),('D','จำนวน'),('E','%')]:
     c = ws[f'{col}41']; c.value = lbl
-    c.fill = mfill(C_DARK); c.font = mf(C_WHITE, True); c.alignment = mal(); c.border = NO_BORDER
-for col, lbl in [('H','สินค้า'), ('I','ยอดขาย'), ('J','จำนวน')]:
+    c.fill = mfill(C_DARK); c.font = mf(C_WHITE, True); c.alignment = mal()
+for col, lbl in [('H','สินค้า'),('I','ยอดขาย'),('J','จำนวน')]:
     c = ws[f'{col}41']; c.value = lbl
-    c.fill = mfill(C_DARK); c.font = mf(C_WHITE, True); c.alignment = mal(); c.border = NO_BORDER
+    c.fill = mfill(C_DARK); c.font = mf(C_WHITE, True); c.alignment = mal()
 ws.row_dimensions[41].height = 19.5
 
-# ── Rows 42-50: Category data ─────────────────────────────
+# ── Category data rows 42-50 ───────────────────────────────
 for i in range(9):
     r = 42 + i; fill = C_STRIPE if i % 2 == 0 else C_WHITE
     ws.row_dimensions[r].height = 19.5
     if i < len(cat_df):
         row = cat_df.iloc[i]
-        for col, val in [
-            ('B', row['ชื่อหมวดหมู่']),
-            ('C', int(row['sales'])),
-            ('D', row['qty']),
-            ('E', row['pct']),         # ← % (float)
-        ]:
+        for col, val in [('B', row['ชื่อหมวดหมู่']), ('C', int(row['sales'])),
+                         ('D', row['qty']), ('E', row['pct'])]:
             c = ws[f'{col}{r}']; c.value = val
-            c.fill = mfill(fill); c.font = mf(C_BLACK); c.alignment = mal(); c.border = NO_BORDER
+            c.fill = mfill(fill); c.font = mf(C_BLACK); c.alignment = mal()
     else:
         for col in ['B','C','D','E']:
-            c = ws[f'{col}{r}']; c.value = ''
-            c.fill = mfill(fill); c.border = NO_BORDER
+            c = ws[f'{col}{r}']; c.value = ''; c.fill = mfill(fill)
 
-# ── Rows 42-51: Top10 data ────────────────────────────────
+# ── Top10 data rows 42-51 ──────────────────────────────────
 for i in range(10):
     r = 42 + i; fill = C_STRIPE if i % 2 == 0 else C_WHITE
     ws.row_dimensions[r].height = 19.5
     if i < len(top10):
         row = top10.iloc[i]
-        for col, val in [
-            ('H', f'{i+1}. {row["ชื่อสินค้า"]}'),
-            ('I', int(row['sales'])),
-            ('J', int(row['จำนวน'])),
-        ]:
+        for col, val in [('H', f'{i+1}. {row["ชื่อสินค้า"]}'),
+                         ('I', int(row['sales'])), ('J', int(row['จำนวน']))]:
             c = ws[f'{col}{r}']; c.value = val
             c.fill = mfill(fill); c.font = mf(C_BLACK)
-            c.alignment = mal(h='left' if col == 'H' else 'center'); c.border = NO_BORDER
+            c.alignment = mal(h='left' if col == 'H' else 'center')
 
-# ── Row 51: Category total ────────────────────────────────
+# ── Category total row 51 ──────────────────────────────────
 ws['B51'].value = 'รวม'
 ws['B51'].fill = mfill(C_MED); ws['B51'].font = mf(C_WHITE, True); ws['B51'].alignment = mal()
-for col in ['C', 'D', 'E']:
+for col in ['C','D','E']:
     c = ws[f'{col}51']; c.value = f'=SUM({col}42:{col}50)'
     c.fill = mfill(C_MED); c.font = mf(C_WHITE, True); c.alignment = mal()
 ws.row_dimensions[51].height = 19.5
-# ← ไม่มี I52, J52 แล้ว
 
 # ============================================================
 # STEP 4: Save

@@ -82,14 +82,27 @@ prod_df = prod_df[prod_df['ชื่อสินค้า'] != 'รวมทั�
 prod_df['sales'] = prod_df['ยอดขายสุทธิ (฿)'].apply(parse_thb)
 top10 = prod_df.sort_values('sales', ascending=False).head(10).reset_index(drop=True)
 
-# --- Hourly (8 rows → H7:H14) ---
+# --- Hourly ---
 hour_df = pd.read_excel(FILE_HOURLY)
 hour_df = hour_df[hour_df['ระยะเวลา'] != 'รวมทั้งหมด'].copy()
-hour_df['sales']    = hour_df['ยอดขายรวม (฿)'].apply(parse_thb)
-hour_df['orders']   = pd.to_numeric(hour_df['จำนวนออเดอร์'], errors='coerce').fillna(0).astype(int)
-hour_df = hour_df[hour_df['sales'] > 0].reset_index(drop=True)
-hour_df['time_str'] = hour_df['ระยะเวลา'].apply(fmt_hour)
-hour_df = hour_df.head(8)   # 8 rows เพราะ total อยู่ H15
+hour_df['sales']  = hour_df['ยอดขายรวม (฿)'].apply(parse_thb)
+hour_df['orders'] = pd.to_numeric(hour_df['จำนวนออเดอร์'], errors='coerce').fillna(0).astype(int)
+hour_df = hour_df[hour_df['sales'] > 0].copy()
+hour_df['time_str']   = hour_df['ระยะเวลา'].apply(fmt_hour)
+hour_df['hour_start'] = hour_df['ระยะเวลา'].str.extract(r'^(\d+)').astype(int)
+
+# เรียงใหม่: เย็น-ดึก (18:00+) ก่อน แล้วตามด้วยเช้า (00:00-05:59)
+hour_evening = hour_df[hour_df['hour_start'] >= 18].sort_values('hour_start')
+hour_night   = hour_df[hour_df['hour_start'] <  6].sort_values('hour_start')
+hour_df = pd.concat([hour_evening, hour_night]).reset_index(drop=True)
+
+# คำนวณ row positions จาก data จริง (ไม่ hardcode)
+HOURLY_START = 7
+HOURLY_ROWS  = len(hour_df)
+HOURLY_END   = HOURLY_START + HOURLY_ROWS - 1
+HOURLY_TOTAL = HOURLY_END + 1
+
+print(f"   → Hourly: {HOURLY_ROWS} ช่วงเวลา (row {HOURLY_START}-{HOURLY_END}, total row {HOURLY_TOTAL})")
 
 # --- Receipts ---
 rec_df    = pd.read_excel(FILE_RECEIPTS)
@@ -113,7 +126,7 @@ DATA_START   = HDR_ROW + 1                    # row 41
 CAT_ROWS     = 9
 TOP10_ROWS   = 10
 CAT_TOTAL_R  = DATA_START + CAT_ROWS          # row 50
-HOURLY_TOTAL = 15                             # H15
+# HOURLY_TOTAL คำนวณอัตโนมัติจาก data แล้วข้างบน
 
 print(f"\n📊 สรุปสถิติ")
 print(f"   ยอดขายรวม : {total_sales:,.0f} บาท")
@@ -204,23 +217,23 @@ for day_idx in range(TOTAL_DAYS):
         c.fill = mfill(fill); c.font = mf(C_BLACK); c.alignment = mal()
         c.border = NO_BORDER
 
-# ── Hourly data rows 7-14 (8 rows, ไม่มีเส้น) ─────────────
+# ── Hourly data (เรียง เย็น→ดึก→เช้า, ไม่มีเส้น) ──────────
 for i, row in hour_df.iterrows():
-    r = DAILY_START + i
+    r = HOURLY_START + i
     fill = C_STRIPE if i % 2 == 0 else C_WHITE
     for col, val in [('H', row['time_str']), ('I', int(row['sales'])), ('J', int(row['orders']))]:
         c = ws[f'{col}{r}']; c.value = val
         c.fill = mfill(fill); c.font = mf(C_BLACK); c.alignment = mal()
         c.border = NO_BORDER
 
-# ── Hourly total row 15 ────────────────────────────────────
+# ── Hourly total (คำนวณ row อัตโนมัติ) ────────────────────
 ws[f'H{HOURLY_TOTAL}'].value = 'รวม'
 ws[f'H{HOURLY_TOTAL}'].fill = mfill(C_MED); ws[f'H{HOURLY_TOTAL}'].font = mf(C_WHITE, True)
 ws[f'H{HOURLY_TOTAL}'].alignment = mal()
-ws[f'I{HOURLY_TOTAL}'].value = f'=SUM(I{DAILY_START}:I{DAILY_START+7})'
+ws[f'I{HOURLY_TOTAL}'].value = f'=SUM(I{HOURLY_START}:I{HOURLY_END})'
 ws[f'I{HOURLY_TOTAL}'].fill = mfill(C_MED); ws[f'I{HOURLY_TOTAL}'].font = mf(C_WHITE, True)
 ws[f'I{HOURLY_TOTAL}'].alignment = mal()
-ws[f'J{HOURLY_TOTAL}'].value = f'=SUM(J{DAILY_START}:J{DAILY_START+7})'
+ws[f'J{HOURLY_TOTAL}'].value = f'=SUM(J{HOURLY_START}:J{HOURLY_END})'
 ws[f'J{HOURLY_TOTAL}'].fill = mfill(C_MED); ws[f'J{HOURLY_TOTAL}'].font = mf(C_WHITE, True)
 ws[f'J{HOURLY_TOTAL}'].alignment = mal()
 ws.row_dimensions[HOURLY_TOTAL].height = 19.5
