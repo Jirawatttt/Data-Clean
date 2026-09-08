@@ -195,9 +195,9 @@ def build_menu_report(category_master: pd.DataFrame,
                      [master_name, category, qty, net_sales] (already grouped
                      by master_name -- see main()).
     Returns a wide table: one row per master menu item, one qty/net column
-    pair per month, totals, rank and status. Items with zero sales in every
-    month supplied are kept (with 0s) rather than dropped, since the master
-    list is the full current menu.
+    pair per month, totals, and rank (by total qty sold, high to low).
+    Items with zero sales in every month supplied are kept (with 0s) rather
+    than dropped, since the master list is the full current menu.
     """
     base = category_master.copy()
     if category_filter:
@@ -221,25 +221,10 @@ def build_menu_report(category_master: pd.DataFrame,
     report = report.sort_values("qty_total", ascending=False).reset_index(drop=True)
     report.insert(0, "rank", report.index + 1)
 
-    sold_mask = report["qty_total"] > 0
-    n_sold = sold_mask.sum()
-
-    def status(row):
-        if row["qty_total"] == 0:
-            return "ไม่มีการขาย"
-        pct_rank = row["rank"] / n_sold
-        if pct_rank <= 0.2:
-            return "ขายดี"
-        if pct_rank > 0.8:
-            return "ขายไม่ดี"
-        return "ปานกลาง"
-
-    report["status"] = report.apply(status, axis=1)
-
     ordered_cols = ["rank", "category", "master_name", "price"]
     for m in month_labels:
         ordered_cols += [f"qty_{m}", f"net_{m}"]
-    ordered_cols += ["qty_total", "net_total", "status"]
+    ordered_cols += ["qty_total", "net_total"]
     return report[ordered_cols]
 
 
