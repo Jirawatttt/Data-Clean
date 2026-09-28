@@ -12,6 +12,8 @@ env/
 *.xls
 *.csv
 
+*.json
+
 # ยกเว้นไฟล์ template ให้ upload ได้
 !Template/*.xlsx
 
